@@ -110,32 +110,33 @@ export default function FlashSale() {
     ] as const, []);
 
     return (
-        <section className="mt-12 space-y-6">
-            <div className="pl-32 flex items-end justify-between gap-4">
-                <div className="space-y-3">
+        <section className="mt-12 md:mt-16 space-y-6">
+            <div className="px-32 flex items-end justify-between gap-6">
+                <div className="gap-10">
                     <SectionHeadLine title="Today's" />
-                    <h3 className="text-2xl font-semibold sm:text-3xl">Flash Sales</h3>
-                </div>
-                <div className="flex items-center gap-3">
-                    <Countdown endAt={endAt} />
-                    <div className="hidden items-center gap-2 md:flex">
-                        <button
-                            ref={prevRef}
-                            aria-label="Previous products"
-                            className="grid h-8 w-8 place-items-center rounded-full border border-neutral-300 text-neutral-700 hover:bg-neutral-100 dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-800"
-                            onClick={() => swiperRef.current?.slidePrev()}
-                        >
-                            <ArrowLeftIcon />
-                        </button>
-                        <button
-                            ref={nextRef}
-                            aria-label="Next products"
-                            className="grid h-8 w-8 place-items-center rounded-full border border-neutral-300 text-neutral-700 hover:bg-neutral-100 dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-800"
-                            onClick={() => swiperRef.current?.slideNext()}
-                        >
-                            <ArrowRightIcon />
-                        </button>
+                    <div className="flex items-end justify-end gap-14">
+                        <h3 className="text-2xl font-semibold sm:text-3xl">Flash Sales</h3>
+                        <Countdown endAt={endAt} />
                     </div>
+               </div>
+
+                <div className="hidden items-center gap-2 md:flex">
+                    <button
+                        ref={prevRef}
+                        aria-label="Previous products"
+                        className="grid h-8 w-8 place-items-center rounded-full border border-neutral-300 text-neutral-700 hover:bg-neutral-100 dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-800"
+                        onClick={() => swiperRef.current?.slidePrev()}
+                    >
+                        <ArrowLeftIcon />
+                    </button>
+                    <button
+                        ref={nextRef}
+                        aria-label="Next products"
+                        className="grid h-8 w-8 place-items-center rounded-full border border-neutral-300 text-neutral-700 hover:bg-neutral-100 dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-800"
+                        onClick={() => swiperRef.current?.slideNext()}
+                    >
+                        <ArrowRightIcon />
+                    </button>
                 </div>
             </div>
             <div className={`${!openSwiper ? "ml-32" : "-ml-32"} ${openSwiper && "pl-32"} transition-all duration-300`}>
@@ -172,7 +173,7 @@ export default function FlashSale() {
             </div>
 
             <div className="flex justify-center">
-                <button className="rounded-md bg-[#DB4444] px-6 py-2 text-white hover:opacity-90">
+                <button className="rounded-md bg-[#DB4444] px-6 py-3 text-white hover:opacity-90 font-medium text-base">
                     View All Products
                 </button>
             </div>
@@ -182,17 +183,20 @@ export default function FlashSale() {
 
 function ArrowLeftIcon() {
     return (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M15 19l-7-7 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 1L1 8L8 15M1 8H17" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
+
+
     );
 }
 
 function ArrowRightIcon() {
     return (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.75 7.75H17.25M17.25 7.75L10.25 0.75M17.25 7.75L10.25 14.75" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
+
     );
 }
 

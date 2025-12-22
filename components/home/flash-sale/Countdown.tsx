@@ -39,7 +39,7 @@ export default function Countdown({ endAt, className }: CountdownProps) {
             role="timer"
             className={className}
         >
-            <div className="flex items-end gap-5 sm:gap-7">
+            <div className="flex items-end gap-3">
                 <TimeUnit label="Days" value={left.days} />
                 <Separator />
                 <TimeUnit label="Hours" value={left.hours} />
@@ -56,16 +56,16 @@ function TimeUnit({ label, value }: { label: string; value: number }) {
     const padded = String(value).padStart(2, "0");
     return (
         <div className="text-center">
-            <div className="text-[10px] uppercase tracking-wide text-neutral-500 sm:text-xs">
+            <div className="text-[10px] uppercase tracking-wide text-black sm:text-xs">
                 {label}
             </div>
-            <div className="font-semibold tabular-nums sm:text-xl">{padded}</div>
+            <div className="font-bold tabular-nums sm:text-2xl md:text-3xl">{padded}</div>
         </div>
     );
 }
 
 function Separator() {
-    return <span className="mb-1 text-lg font-semibold text-[#DB4444]">:</span>;
+    return <span className="mb-1 text-lg font-bold text-[#E07575]">:</span>;
 }
 
 
