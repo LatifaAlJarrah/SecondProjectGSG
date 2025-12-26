@@ -1,4 +1,5 @@
 "use client";
+
 import SectionHeadLine from "@/components/SectionHeadLine";
 import Countdown from "./Countdown";
 import ProductCard from "@/components/home/product-card/ProductCard";
@@ -6,174 +7,130 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState, useCallback } from "react";
 import type { Swiper as SwiperType } from "swiper";
+import { flashSaleProducts } from "@/data/products";
 
 export default function FlashSale() {
-    // Example: sale ends in ~3 days from now
-    const endAt = new Date("2026-01-01T00:00:00Z").getTime(); // constant timestamp for demo
-    const prevRef = useRef<HTMLButtonElement>(null);
-    const nextRef = useRef<HTMLButtonElement>(null);
+    const endAt = new Date("2026-01-01T00:00:00Z").getTime();
     const swiperRef = useRef<SwiperType | null>(null);
-    const [openSwiper, setOpenSwiper] = useState(false);
+    const [isBeginning, setIsBeginning] = useState(true);
+    const [isEnd, setIsEnd] = useState(false);
 
-    const products = useMemo(() => [
-        {
-            id: "1",
-            name: "HAVIT HV-G92 Gamepad",
-            imageUrl:
-                "/assets/images/products/product1.png",
-            price: 120,
-            oldPrice: 160,
-            discountPercent: 40,
-            rating: 4,
-            ratingCount: 88,
-        },
-        {
-            id: "2",
-            name: "AK-900 Wired Keyboard",
-            imageUrl:
-                "/assets/images/products/product2.png",
-            price: 960,
-            oldPrice: 1160,
-            discountPercent: 35,
-            rating: 4,
-            ratingCount: 75,
-        },
-        {
-            id: "3",
-            name: "IPS LCD Gaming Monitor",
-            imageUrl:
-                "/assets/images/products/product3.png",
-            price: 370,
-            oldPrice: 400,
-            discountPercent: 10,
-            rating: 4,
-            ratingCount: 99,
-        },
-        {
-            id: "4",
-            name: "S-Series Comfort Chair",
-            imageUrl:
-                "/assets/images/products/product4.png",
-            price: 375,
-            oldPrice: 400,
-            discountPercent: 25,
-            rating: 4,
-            ratingCount: 99,
-        },
-        {
-            id: "5",
-            name: "HAVIT HV-G92 Gamepad",
-            imageUrl:
-                "/assets/images/products/product1.png",
-            price: 120,
-            oldPrice: 160,
-            discountPercent: 40,
-            rating: 4,
-            ratingCount: 88,
-        },
-        {
-            id: "6",
-            name: "AK-900 Wired Keyboard",
-            imageUrl:
-                "/assets/images/products/product2.png",
-            price: 960,
-            oldPrice: 1160,
-            discountPercent: 35,
-            rating: 4,
-            ratingCount: 75,
-        },
-        {
-            id: "7",
-            name: "IPS LCD Gaming Monitor",
-            imageUrl:
-                "/assets/images/products/product3.png",
-            price: 370,
-            oldPrice: 400,
-            discountPercent: 10,
-            rating: 4,
-            ratingCount: 99,
-        },
-        {
-            id: "8",
-            name: "S-Series Comfort Chair",
-            imageUrl:
-                "/assets/images/products/product4.png",
-            price: 375,
-            oldPrice: 400,
-            discountPercent: 25,
-            rating: 4,
-            ratingCount: 99,
-        },
+    const products = flashSaleProducts;
 
-    ] as const, []);
+    // Update state based on swiper position
+    const updateSwiperState = useCallback((swiper: SwiperType) => {
+        setIsBeginning(swiper.isBeginning);
+        setIsEnd(swiper.isEnd);
+    }, []);
+
+    // Handle swiper initialization
+    const handleSwiper = useCallback((swiper: SwiperType) => {
+        swiperRef.current = swiper;
+        updateSwiperState(swiper);
+    }, [updateSwiperState]);
+
+    // Handle slide change
+    const handleSlideChange = useCallback((swiper: SwiperType) => {
+        updateSwiperState(swiper);
+    }, [updateSwiperState]);
+
+    // Navigation handlers
+    const handlePrev = useCallback(() => {
+        swiperRef.current?.slidePrev();
+    }, []);
+
+    const handleNext = useCallback(() => {
+        swiperRef.current?.slideNext();
+    }, []);
 
     return (
-        <section className="mt-12 md:mt-16 space-y-6">
-            <div className="px-32 flex items-end justify-between gap-6">
-                <div className="gap-10">
+        <section className="mt-12 space-y-6">
+            <div className="px-4 md:px-12 xl:px-32 flex flex-col items-start justify-between gap-4 w-full">
+                <div className="space-y-3 w-full">
                     <SectionHeadLine title="Today's" />
-                    <div className="flex items-end justify-end gap-14">
-                        <h3 className="text-2xl font-semibold sm:text-3xl">Flash Sales</h3>
-                        <Countdown endAt={endAt} />
+                    <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full">
+                        <div className="flex flex-col md:flex-row items-start md:items-center gap-10">
+                            <h3 className="text-2xl font-semibold sm:text-3xl text-start md:text-center">Flash Sales</h3>
+                            <div className="flex items-center gap-3">
+                                <Countdown endAt={endAt} />  
+                            </div>        
+                        </div>
+                        <div className="hidden items-center gap-2 md:flex justify-end">
+                            <button
+                                aria-label="Previous products"
+                                onClick={handlePrev}
+                                disabled={isBeginning}
+                                className="grid h-8 w-8 place-items-center rounded-full border border-neutral-300 text-neutral-700 transition-colors hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-800"
+                            >
+                                <ArrowLeftIcon />
+                            </button>
+                            <button
+                                aria-label="Next products"
+                                onClick={handleNext}
+                                disabled={isEnd}
+                                className="grid h-8 w-8 place-items-center rounded-full border border-neutral-300 text-neutral-700 transition-colors hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-800"
+                            >
+                                <ArrowRightIcon />
+                            </button>
+                        </div>
                     </div>
-               </div>
-
-                <div className="hidden items-center gap-2 md:flex">
-                    <button
-                        ref={prevRef}
-                        aria-label="Previous products"
-                        className="grid h-8 w-8 place-items-center rounded-full border border-neutral-300 text-neutral-700 hover:bg-neutral-100 dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-800"
-                        onClick={() => swiperRef.current?.slidePrev()}
-                    >
-                        <ArrowLeftIcon />
-                    </button>
-                    <button
-                        ref={nextRef}
-                        aria-label="Next products"
-                        className="grid h-8 w-8 place-items-center rounded-full border border-neutral-300 text-neutral-700 hover:bg-neutral-100 dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-800"
-                        onClick={() => swiperRef.current?.slideNext()}
-                    >
-                        <ArrowRightIcon />
-                    </button>
                 </div>
+                
             </div>
-            <div className={`${!openSwiper ? "ml-32" : "-ml-32"} ${openSwiper && "pl-32"} transition-all duration-300`}>
+            <div className="px-4 md:px-12 xl:px-32">
                 <Swiper
                     modules={[Navigation]}
                     spaceBetween={16}
                     slidesPerView={1.15}
-                    onSwiper={(swiper) => {
-                        swiperRef.current = swiper;
-                        setOpenSwiper(!swiper.isBeginning);
-                    }}
-                    onReachBeginning={() => setOpenSwiper(false)}
-                    onFromEdge={() => setOpenSwiper(true)}
-                    // Smooth feel without extra overhead
+                    onSwiper={handleSwiper}
+                    onSlideChange={handleSlideChange}
                     speed={450}
                     grabCursor
                     roundLengths={false}
                     watchOverflow
                     breakpoints={{
-                        // 128px (Tailwind 32) is the section's left padding we removed with -ml-32
-                        0: { slidesPerView: 1.15, spaceBetween: 16, slidesOffsetBefore: 0, slidesOffsetAfter: 128 },
-                        640: { slidesPerView: 2.15, spaceBetween: 16, slidesOffsetBefore: 0, slidesOffsetAfter: 128 },
-                        768: { slidesPerView: 3.15, spaceBetween: 16, slidesOffsetBefore: 0, slidesOffsetAfter: 128 },
-                        1024: { slidesPerView: 4.15, spaceBetween: 16, slidesOffsetBefore: 0, slidesOffsetAfter: 128 },
+                        0: {
+                            slidesPerView: 1.15,
+                            spaceBetween: 16,
+                            slidesOffsetBefore: 0,
+                            slidesOffsetAfter: 128,
+                        },
+                        640: {
+                            slidesPerView: 2.15,
+                            spaceBetween: 16,
+                            slidesOffsetBefore: 0,
+                            slidesOffsetAfter: 128,
+                        },
+                        768: {
+                            slidesPerView: 3.15,
+                            spaceBetween: 16,
+                            slidesOffsetBefore: 0,
+                            slidesOffsetAfter: 128,
+                        },
+                        1024: {
+                            slidesPerView: 4.15,
+                            spaceBetween: 16,
+                            slidesOffsetBefore: 0,
+                            slidesOffsetAfter: 128,
+                        },
                     }}
-                    className="px-0 md:px-0"
+                    className="px-0"
                 >
-                    {products.map((p) => (
-                        <SwiperSlide key={p.id} className="h-auto!">
-                            <ProductCard product={{ ...p }} />
+                    {products.map((product) => (
+                        <SwiperSlide key={product.id} className="h-auto!">
+                            <ProductCard product={product} />
                         </SwiperSlide>
                     ))}
                 </Swiper>
             </div>
 
             <div className="flex justify-center">
-                <button className="rounded-md bg-[#DB4444] px-6 py-3 text-white hover:opacity-90 font-medium text-base">
+                <button
+                    type="button"
+                    className="rounded-md bg-[#DB4444] px-6 py-2 text-white transition-opacity hover:opacity-90"
+                >
                     View All Products
                 </button>
             </div>
@@ -183,21 +140,40 @@ export default function FlashSale() {
 
 function ArrowLeftIcon() {
     return (
-        <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 1L1 8L8 15M1 8H17" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true"
+        >
+            <path
+                d="M15 19l-7-7 7-7"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
         </svg>
-
-
     );
 }
 
 function ArrowRightIcon() {
     return (
-        <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0.75 7.75H17.25M17.25 7.75L10.25 0.75M17.25 7.75L10.25 14.75" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true"
+        >
+            <path
+                d="M9 5l7 7-7 7"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
         </svg>
-
     );
 }
-
-

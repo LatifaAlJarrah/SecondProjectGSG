@@ -2,52 +2,12 @@
 
 import SectionHeadLine from "@/components/SectionHeadLine";
 import ProductCard from "@/components/home/product-card/ProductCard";
+import { bestSellingProducts } from "@/data/products";
 
 type Product = Parameters<typeof ProductCard>[0]["product"];
 
 export default function BestSelling() {
-	const products: Product[] = [
-		{
-			id: "bs-1",
-			name: "The north coat",
-			imageUrl: "/assets/images/products/product5 (2).png",
-			price: 260,
-			oldPrice: 360,
-			discountPercent: 28,
-			rating: 4,
-			ratingCount: 65,
-		},
-		{
-			id: "bs-2",
-			name: "Gucci duffle bag",
-			imageUrl: "/assets/images/products/product6 (2).png",
-			price: 960,
-			oldPrice: 1160,
-			discountPercent: 17,
-			rating: 4,
-			ratingCount: 65,
-	},
-		{
-			id: "bs-3",
-			name: "RGB liquid CPU Cooler",
-			imageUrl: "/assets/images/products/product7 (2).png",
-			price: 160,
-			oldPrice: 170,
-			discountPercent: 6,
-			rating: 4,
-			ratingCount: 65,
-		},
-		{
-			id: "bs-4",
-			name: "Small BookSelf",
-			imageUrl: "/assets/images/products/product8 (2).png",
-			price: 360,
-			oldPrice: 0,
-			discountPercent: 0,
-			rating: 4,
-			ratingCount: 65,
-		},
-	];
+	const products: Product[] = bestSellingProducts;
 
 	return (
 		<section className="mt-14 space-y-6">

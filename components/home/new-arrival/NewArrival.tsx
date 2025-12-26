@@ -2,50 +2,7 @@
 
 import SectionHeadLine from "@/components/SectionHeadLine";
 import Image from "next/image";
-
-type Banner = {
-    id: string;
-    title: string;
-    subtitle?: string;
-    imageUrl: string;
-    cta?: { label: string; href: string };
-    dark?: boolean;
-};
-
-const banners: Banner[] = [
-    {
-        id: "ps5",
-        title: "PlayStation 5",
-        subtitle: "Black and White version of the PS5 coming out on sale.",
-        imageUrl: "/assets/images/PlayStation.png",
-        cta: { label: "Shop Now", href: "#" },
-        dark: true,
-    },
-    {
-        id: "women",
-        title: "Women's Collections",
-        subtitle: "Featured women collections that give you another vibe.",
-        imageUrl: "/assets/images/Women's.png",
-        cta: { label: "Shop Now", href: "#" },
-        dark: true,
-    },
-    {
-        id: "speakers",
-        title: "Speakers",
-        subtitle: "Amazon wireless speakers",
-        imageUrl: "/assets/images/Speakers.png",
-        cta: { label: "Shop Now", href: "#" },
-        dark: true,
-    },
-    {
-        id: "perfume",
-        title: "Perfume",
-        subtitle: "GUCCI INTENSE OUD EDP",
-        imageUrl: "/assets/images/Perfume.png",
-        cta: { label: "Shop Now", href: "#" },
-        dark: true,
-    },
-];
+import { banners, type Banner } from "@/data/banners";
 
 function BannerCard({ item, className }: { item: Banner; className?: string }) {
     return (
@@ -83,18 +40,34 @@ export default function NewArrival() {
                 <h3 className="text-2xl font-semibold sm:text-3xl">New Arrival</h3>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-12">
-                <BannerCard item={banners[0]} className="md:col-span-6 h-72 sm:h-full" />
-                <div className="flex flex-col gap-4 col-span-6">
-                    <BannerCard item={banners[1]} className="md:col-span-12 h-72 sm:h-96" />
-                    <div className="flex flex-col md:flex-row gap-4 w-full">
-                        <BannerCard item={banners[2]} className="h-72 w-full" />
-                        <BannerCard item={banners[3]} className="h-72 w-full " />
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+                {/* Main banner - full width on mobile, half on desktop */}
+                <BannerCard
+                    item={banners[0]}
+                    className="col-span-1 md:col-span-6 h-64 sm:h-72 md:h-full w-full"
+                />
+
+                {/* Right side banners - full width on mobile, half on desktop */}
+                <div className="col-span-1 md:col-span-6 flex flex-col gap-4">
+                    {/* Top banner */}
+                    <BannerCard
+                        item={banners[1]}
+                        className="h-64 sm:h-72 md:h-96 w-full"
+                    />
+
+                    {/* Bottom two banners */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <BannerCard
+                            item={banners[2]}
+                            className="h-64 sm:h-72 w-full"
+                        />
+                        <BannerCard
+                            item={banners[3]}
+                            className="h-64 sm:h-72 w-full"
+                        />
                     </div>
                 </div>
             </div>
         </section>
     );
 }
-
-
